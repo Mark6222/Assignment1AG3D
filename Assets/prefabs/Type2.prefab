@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 657318587545992804}
   m_Layer: 0
   m_Name: Type2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,8 +134,10 @@ MonoBehaviour:
   health: 100
   player: {fileID: 0}
   ambushStart: {fileID: 0}
-  enemyType: 2
+  enemyType: 3
   bullet: {fileID: 634574788802618201, guid: d2bc4e92ed8c4ed43859f6510966137e, type: 3}
+  ambushAreaTriggered: 0
+  ammo: 0
 --- !u!95 &399347964494546291
 Animator:
   serializedVersion: 7
@@ -176,7 +178,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 0.00001
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

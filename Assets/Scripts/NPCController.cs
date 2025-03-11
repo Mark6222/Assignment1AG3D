@@ -33,6 +33,8 @@ public class NPCController : MonoBehaviour
     public int ammo = 10;
     bool foundClosestAmmoPack = false;
     bool healthPacksAvailable = false;
+    public GameObject gernade;
+    bool gernadeThrown = false;
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -87,7 +89,7 @@ public class NPCController : MonoBehaviour
                 navMeshAgent.isStopped = false;
             }
         }
-        if (info.IsName("GoToAmbush") && enemyType == 3)
+        if (info.IsName("GoToAmbush") && enemyType == 4)
         {
             navMeshAgent.isStopped = false;
             target = ambushStart;
@@ -99,13 +101,15 @@ public class NPCController : MonoBehaviour
                 anim.SetTrigger("reachedAmbush");
             }
         }
-        if (info.IsName("BackToStart"))
+        if (info.IsName("ThrowGernade") && enemyType == 4)
         {
-            navMeshAgent.isStopped = false;
-            navMeshAgent.SetDestination(initailPosition);
-            if (Vector3.Distance(transform.position, initailPosition) < 2) anim.SetTrigger("reachedStartingPosition");
-        }
-
+            if (!gernadeThrown)
+            {
+                GameObject thrown = Instantiate(gernade, transform.position, Quaternion.identity);
+                thrown.GetComponent<Rigidbody>().AddForce(transform.forward * 2f, ForceMode.Impulse);
+                gernadeThrown = true;
+            }
+        }else gernadeThrown = false;
         if (info.IsName("LookForHealthPack"))
         {
             navMeshAgent.isStopped = false;
@@ -189,6 +193,7 @@ public class NPCController : MonoBehaviour
                 }
                 break;
             case 4:
+                Type4Move();
                 break;
             case 5:
                 break;
@@ -370,6 +375,19 @@ public class NPCController : MonoBehaviour
         {
             target = player;
             anim.SetBool("Hunter", true);
+        }
+    }
+    bool fleeing = false;
+    void Type4Move()
+    {
+        if (!fleeing)
+        {
+            anim.SetTrigger("startToFlee");
+            fleeing = true;
+        }
+        if (info.IsName("ThrowGernade"))
+        {
+            fleeing = false;
         }
     }
     void OnCollisionEnter(Collision collision)

@@ -11,6 +11,8 @@ TagManager:
   - Bullet
   - Enemy
   - ammo
+  - teamMember
+  - target
   layers:
   - Default
   - TransparentFX

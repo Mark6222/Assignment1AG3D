@@ -5,11 +5,11 @@ public class Ambush : MonoBehaviour
     [SerializeField] private Animator anim;
     void Start()
     {
-        anim = GameObject.Find("Type3").GetComponent<Animator>();
+        anim = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Animator>();
     }
-    void OnTiggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Ambush");
-        anim.SetTrigger("goToAmbush");
+        Debug.Log("gheuifehn");
+        if(other.gameObject.tag == "Player") anim.SetTrigger("goToAmbush");
     }
 }
