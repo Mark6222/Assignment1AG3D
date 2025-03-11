@@ -21,21 +21,24 @@ public class Leader : MonoBehaviour
     {
         if (!player)
         {
+            waypoints = GameObject.FindGameObjectsWithTag("wp");
             Player = GameObject.FindGameObjectWithTag("Player");
             anim = GetComponent<Animator>();
-            for (int i = 0; i < waypoints.Length; i++)
-            {
-                waypoints[i].GetComponent<Renderer>().enabled = false;
-            }
             navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+            target = waypoints[WPCount];
+            teamMemebers = GameObject.FindGameObjectsWithTag("mobMember");
         }
-        teamMemebers = GameObject.FindGameObjectsWithTag("teamMember");
-        nbTeamMembers = teamMemebers.Length;
+        else
+        {
+            teamMemebers = GameObject.FindGameObjectsWithTag("teamMember");
+        }
     }
     void Attack()
     {
         Debug.Log("attack");
-        allTargets = GameObject.FindGameObjectsWithTag("target");
+        if (player) allTargets = GameObject.FindGameObjectsWithTag("mobMember");
+        else { allTargets = GameObject.FindGameObjectsWithTag("teamMember"); Debug.Log("attack2"); }
+
         nbTargets = allTargets.Length;
         for (int i = 0; i < nbTargets; i++)
         {
@@ -53,6 +56,7 @@ public class Leader : MonoBehaviour
         }
         else
         {
+            info = anim.GetCurrentAnimatorStateInfo(0);
             Type2Move();
             if (info.IsName("FollowWaypoints"))
             {
@@ -92,15 +96,15 @@ public class Leader : MonoBehaviour
             navMeshAgent.SetDestination(target.transform.position);
         }
         float distanceToTarget = Vector3.Distance(Player.transform.position, transform.position);
-        if (distanceToTarget < 4f)
+        if (distanceToTarget < 10f)
         {
             anim.SetBool("followWaypoints", false);
-            anim.SetBool("attck", true);
+            anim.SetBool("attack", true);
         }
         else
         {
             anim.SetBool("followWaypoints", true);
-            anim.SetBool("attck", false);
+            anim.SetBool("attack", false);
         }
     }
 }

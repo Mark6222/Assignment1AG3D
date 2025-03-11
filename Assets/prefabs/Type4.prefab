@@ -125,19 +125,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42e81d0b8397b844a911614cb5ae88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   target: {fileID: 0}
-  health: 100
-  player: {fileID: 0}
-  ambushStart: {fileID: 0}
-  enemyType: 3
+  health: 10
+  enemyType: 2
   bullet: {fileID: 634574788802618201, guid: d2bc4e92ed8c4ed43859f6510966137e, type: 3}
   ambushAreaTriggered: 0
   ammo: 0
+  gernade: {fileID: 2343931091856045931, guid: bff852ea80c0782468736afd8239dd63, type: 3}
 --- !u!95 &1113017800376829707
 Animator:
   serializedVersion: 7

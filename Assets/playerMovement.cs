@@ -9,18 +9,24 @@ public class playerMovement : MonoBehaviour
 
     private Rigidbody rb;
     [SerializeField] private GameObject bullet;
-
+    Animator anim;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
     }
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
 
     private void Update()
     {
+
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
@@ -33,6 +39,14 @@ public class playerMovement : MonoBehaviour
         right.Normalize();
         Vector3 moveDirection = (right * moveX + forward * moveZ).normalized;
         rb.linearVelocity = new Vector3(moveDirection.x * moveSpeed, rb.linearVelocity.y, moveDirection.z * moveSpeed);
+        if (rb.linearVelocity.magnitude > 0.0f)
+        {
+            anim.SetBool("Walking", true);
+        }
+        else
+        {
+            anim.SetBool("Walking", false);
+        }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
@@ -46,7 +60,7 @@ public class playerMovement : MonoBehaviour
     private void Shoot()
     {
         GameObject currentBullet = Instantiate(bullet, Camera.main.transform.position + (Camera.main.transform.forward * 1.8f), Camera.main.transform.rotation);
-        currentBullet.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 10f, ForceMode.Impulse);
+        currentBullet.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * 50f, ForceMode.Impulse);
         currentBullet.GetComponent<Rigidbody>().useGravity = false;
         Destroy(currentBullet, 5f);
     }

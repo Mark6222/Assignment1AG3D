@@ -13,6 +13,9 @@ TagManager:
   - ammo
   - teamMember
   - target
+  - wp
+  - mobMember
+  - Leader
   layers:
   - Default
   - TransparentFX

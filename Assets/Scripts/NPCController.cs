@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 public class NPCController : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
-    public GameObject[] waypoints;
+    GameObject[] waypoints;
     public GameObject target;
     int WPCount = 0;
     Animator anim;
@@ -17,14 +17,14 @@ public class NPCController : MonoBehaviour
     bool isInTheFieldOfView;
     GameObject[] allBCs;
     Vector3 direction;
-    [Range(0, 100)]
+    [Range(0, 10)]
     public int health;
     float healthTimer;
     GameObject[] healthPacks;
     GameObject[] AmmoPacks;
 
-    public GameObject player;
-    public GameObject ambushStart;
+    GameObject player;
+    GameObject ambushStart;
     Vector3 initailPosition;
     public int enemyType = 0;
     public GameObject bullet;
@@ -37,6 +37,9 @@ public class NPCController : MonoBehaviour
     bool gernadeThrown = false;
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        waypoints = GameObject.FindGameObjectsWithTag("wp");
+        ambushStart = GameObject.Find("AmbushArea");
         anim = GetComponent<Animator>();
         for (int i = 0; i < waypoints.Length; i++)
         {
@@ -49,7 +52,7 @@ public class NPCController : MonoBehaviour
             anim.SetTrigger("FollowWaypoints");
             target = waypoints[WPCount];
         }
-        SetHealth(100);
+        SetHealth(10);
     }
     private float timer = 0f;
     private float interval = 3f;
@@ -131,7 +134,7 @@ public class NPCController : MonoBehaviour
                 navMeshAgent.SetDestination(target.transform.position);
                 if (Vector3.Distance(transform.position, target.transform.position) < 2)
                 {
-                    SetHealth(100);
+                    SetHealth(10);
                     Destroy(target);
                     anim.SetTrigger("FollowWaypoints");
 
@@ -179,7 +182,7 @@ public class NPCController : MonoBehaviour
                 {
                     anim.SetTrigger("lookForAmmoPack");
                 }
-                if (health < 20 && !info.IsName("Flee"))
+                if (health < 2 && !info.IsName("Flee"))
                 {
                     anim.SetTrigger("lookForHealthPack");
                 }
@@ -206,7 +209,7 @@ public class NPCController : MonoBehaviour
         //     SetHealth(health - 2);
         //     healthTimer = 0;
         // }
-        if (health < 0) Destroy(gameObject);
+        if (health <= 0) Destroy(gameObject);
     }
 
     private void SearchForAmmoPack()
@@ -394,6 +397,7 @@ public class NPCController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Bullet")
         {
+            Debug.Log("hit");
             health--;
         }
     }
